@@ -3,6 +3,21 @@
 .stories-list {
     margin: 20px 5px;
   }
+  #stories-container {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 50px;
+    height: 600px;
+    overflow-y: scroll;
+  }
+  
+  #stories-container::-webkit-scrollbar-thumb {
+    background-color: #ff6600;
+  }
+  
+   #stories-container::-webkit-scrollbar {
+    width: 10px;
+   }
   
   .stories-list > li {
     color: gray;
@@ -16,7 +31,16 @@
     margin: 20px 30px;
   }
   
-  
+  .star,
+.trash-can {
+  font-size: 0.75rem;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.trash-can:hover {
+  color: crimson;
+}
   /* Individual stories */
   
   .story-link {
@@ -37,4 +61,5 @@
   .story-user {
     display: block;
   }
+
   

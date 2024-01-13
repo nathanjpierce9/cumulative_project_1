@@ -19,7 +19,7 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {
+function generateStoryMarkup(story, showDeleteBtn = false) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
@@ -27,9 +27,11 @@ function generateStoryMarkup(story) {
     // if a user is logged in, show favorite/not-favorite star
   const showStar = Boolean(currentUser);
 
+
   return $(`
       <li id="${story.storyId}">
         <div>
+        ${showDeleteBtn ? getDeleteBtnHTML() : ""}
         ${showStar ? getStarHTML(story, currentUser) : ""}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -39,6 +41,13 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+}
+
+function getDeleteBtnHTML() {
+  return `
+      <span class="trash-can">
+        <i class="fas fa-trash-alt"></i>
+      </span>`;
 }
 
 function getStarHTML(story, user) {
@@ -87,6 +96,20 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+async function deleteStory(evt) {
+  console.debug("deleteStory");
+
+  const $closestLi = $(evt.target).closest("li");
+  const storyId = $closestLi.attr("id");
+
+  await storyList.removeStory(currentUser, storyId);
+
+  // re-generate story list
+  await putUserStoriesOnPage();
+}
+
+$ownStories.on("click", ".trash-can", deleteStory);
 
 function putFavoritesListOnPage() {
   console.debug("putFavoritesListOnPage");
